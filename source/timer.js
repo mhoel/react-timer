@@ -8,14 +8,7 @@ var Timer = React.createClass({
   }
 });
 
-var ResetBtn = React.createClass({
-  render: function() {
-    return (
-      <button type="button" onClick={this.props.reset}>{this.props.value}</button>
-      );
-  }
-});
-var StartBtn = React.createClass({
+var Btn = React.createClass({
   render: function() {
     return (
       <button type="button" onClick={this.props.execute}>{this.props.value}</button>
@@ -26,7 +19,7 @@ var StartBtn = React.createClass({
 var Countdown = React.createClass({
   resetTimer: function() {
     this.setState({counter: 10});
-
+    this.props.reset();
   },
   _tick: function() {
     if(this.state.counter > 0) {
@@ -52,8 +45,8 @@ var Countdown = React.createClass({
     return (
       <div id="countdown">
       <Timer countdown={this.state.counter}></Timer>
-      <StartBtn execute={this.startCountdown} value="Start countdown"></StartBtn>
-      <ResetBtn reset={this.resetTimer} value="Reset timer"></ResetBtn>
+      <Btn execute={this.startCountdown} value="Start countdown"></Btn>
+      <Btn execute={this.resetTimer} value="Reset timer"></Btn>
       </div>
     );
   }
@@ -63,13 +56,16 @@ var App = React.createClass({
   getInitialState: function() {
     return {messageStatus: "hidden"};
   },
-  doSomething: function() {
+  showMessage: function() {
     this.setState({messageStatus: ""});
+  },
+  hideMessage: function() {
+    this.setState({messageStatus: "hidden"});
   },
   render: function() {
     return (
       <div id="application">
-        <Countdown remaining="10" execute={this.doSomething}></Countdown>
+        <Countdown remaining="10" execute={this.showMessage} reset={this.hideMessage}></Countdown>
         <h1 className={this.state.messageStatus}>{this.props.message}</h1>
       </div>
       );
